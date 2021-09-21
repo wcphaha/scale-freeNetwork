@@ -84,8 +84,8 @@ class Network:
                 exit()
             if event.type == KEYDOWN:
                 if event.key == K_RETURN:
-                    # 当按下回车键时，新增加20个节点
-                    for i in range(500):
+                    # 当按下回车键时，新增加2个节点
+                    for i in range(2):
                         self.add_node()
                 if event.key == K_r:
                     # 当按下R键时，重新绘制一下所有节点
