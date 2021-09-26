@@ -7,13 +7,14 @@ Title = '无标度网络生成过程'
 Width = 1000
 Height = 700
 M0 = 4  # 初始状态是M0都等于4的完全图
-M = 2
+M = 3
 Node_size = 8
+Edge_size = 2
 # 线条颜色
 Black = (0, 0, 0)
 white = (255, 255, 255)
 Red = (255, 0, 0)
-Blue = (0, 0, 255)
+Blue = (31, 120, 180)
 GreenYellow = (173, 255, 47)
 Green = (50, 205, 50)
 Purple = (160, 32, 240)
@@ -57,3 +58,10 @@ def choose_node(nodes):
             for i in weights.keys():
                 if weights[i] == item:
                     return i
+
+
+def data_write_csv(file_name, datas):
+    a, b = datas[0], datas[1]
+    dataframe = pd.DataFrame({'degree': a, 'count': b})
+    dataframe.to_csv(file_name, index=False, sep=',', header=None)
+    print("输出度分布结束")

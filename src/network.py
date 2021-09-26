@@ -27,7 +27,7 @@ class Network:
             pos = [random.randint(50, self.width - 50), random.randint(50, self.height - 50)]
             self.Nodes.append(Node(pos, i))
             self.seq.append(i)
-            pygame.draw.circle(self.screen, Green, pos, Node_size)
+            pygame.draw.circle(self.screen, Red, pos, Node_size)
             # time.sleep(0.5)
             pygame.display.update()
 
@@ -41,7 +41,7 @@ class Network:
         for i in match:
             i[0].update_degree()
             i[1].update_degree()
-            pygame.draw.line(self.screen, Purple, i[0].position, i[1].position, 1)
+            pygame.draw.line(self.screen, Green, i[0].position, i[1].position, Edge_size)
             pygame.display.update()
 
     def add_node(self):
@@ -56,16 +56,24 @@ class Network:
         self.Nodes.append(Node(pos, len(self.seq), M))
         self.seq.append(len(self.seq))
         # 画出新节点
-        pygame.draw.circle(self.screen, Green, self.Nodes[-1].position, Node_size)
+        pygame.draw.circle(self.screen, Blue, self.Nodes[-1].position, Node_size)
         # 更新被选择连接的节点的度数,并画出连边
         for i in n:
             for j in self.Nodes:
                 if j.seq == i:
                     j.update_degree()
-                    pygame.draw.line(self.screen, Purple, j.position, self.Nodes[-1].position, 1)
+                    pygame.draw.line(self.screen, Green, j.position, self.Nodes[-1].position, Edge_size)
 
     def export_datas(self):
-        pass
+        res = []
+        for i in self.Nodes:
+            res.append(i.degree)
+        data = [[], []]
+        for i in range(len(self.seq) - 1):
+            if i in res:
+                data[0].append(i)
+                data[1].append(res.count(i))
+                # 输出度分布信息
 
     def init_pygame(self):
         pygame.init()
@@ -84,13 +92,16 @@ class Network:
                 exit()
             if event.type == KEYDOWN:
                 if event.key == K_RETURN:
-                    # 当按下回车键时，新增加2个节点
-                    for i in range(2):
-                        self.add_node()
+                    pass
+                    # 当按下回车键时，新增加1个节点
+                    self.add_node()
                 if event.key == K_r:
                     # 当按下R键时，重新绘制一下所有节点
                     for node in self.Nodes:
-                        pygame.draw.circle(self.screen, Green, node.position, Node_size)
+                        if node.seq <= M0:
+                            pygame.draw.circle(self.screen, Red, node.position, Node_size)
+                        else:
+                            pygame.draw.circle(self.screen, Blue, node.position, Node_size)
                         pygame.display.update()
                 if event.key == K_m:
                     # 当按下M键时，输出一下所有节点的度
@@ -99,3 +110,4 @@ class Network:
                         degrees.append(i.degree)
                     degrees.sort(reverse=True)
                     print(degrees)
+                    self.export_datas()
